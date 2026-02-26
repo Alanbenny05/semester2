@@ -1,0 +1,402 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~/Desktop$ sudo mysql
+[sudo] password for mca: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.44-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE TABLE DEPARTMENT
+    -> (DEPT_NO VARCHAR(10) PRIMARY_KEY,DEPT_NAME VARCHAR(30));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRIMARY_KEY,DEPT_NAME VARCHAR(30))' at line 2
+mysql> CREATE TABLE DEPARTMENT (DEPT_NO VARCHAR(10) PRIMARY KEY,DEPT_NAME VARCHAR(30));
+ERROR 1046 (3D000): No database selected
+mysql> CREATE DATABASE JOB;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> USE JOB
+Database changed
+mysql> CREATE TABLE DEPARTMENT (DEPT_NO VARCHAR(10) PRIMARY_KEY,DEPT_NAME VARCHAR(30));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRIMARY_KEY,DEPT_NAME VARCHAR(30))' at line 1
+mysql> CREATE TABLE DEPARTMENT (DEPT_NO VARCHAR(10) PRIMARY KEY,DEPT_NAME VARCHAR(30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE EMPLOYEE
+    -> (EMP_NO VARCHAR(10) PRIMARY KEY,
+    -> EMP_NAME VARCHAR(30),
+    -> DESTINATION VARCHAR(20),
+    -> SALARY INT, 
+    -> MOB VARCHAR(15),
+    -> DEPT_NO VARCHAR(10),
+    -> FOREIGN KEY(DEPT_NO) REFERENCES DEPARTMENT (DEPT_NO));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO DEPARTMENT VALUES('DP01','HR');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO DEPARTMENT VALUES('DP02','FINANCE');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO DEPARTMENT VALUES('DP03','IT');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO DEPARTMENT VALUES('DP04','MARKETING');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP01','ANU','MANAGER',45000,'9876986587','DP01');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP02','VEENA','ANALYST',30000,'7898907689','DP02');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP03','ARUN','CLERK',15000,'6786787689','DP02');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP04','ASHA','ANALYST',28000,'8978564332','DP03');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP05','RAVI','MANAGER',50000,'8776542312','DP03');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP06','NEHA','CLERK',5000,'5667899034','DP04');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP07','AMAL','ANALYST',22000,'9998564332','DP01');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP08','JOHN','CLERK',18000,'8899564339','DP04');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP09','KIRAN','MANAGER',60000,'7766889900','DP02');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES ('EMP10','ALEX','ANALYST',32000,'9890979695','DP03');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SHOW TABLES
+    -> ;
++---------------+
+| Tables_in_JOB |
++---------------+
+| DEPARTMENT    |
+| EMPLOYEE      |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC TABLE DEPARTMENT;
++----+-------------+------------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table      | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+------------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | DEPARTMENT | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    4 |   100.00 | NULL  |
++----+-------------+------------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.02 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESTINATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 7898907689 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  50000 | 8776542312 | DP03    |
+| EMP06  | NEHA     | CLERK       |   5000 | 5667899034 | DP04    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP08  | JOHN     | CLERK       |  18000 | 8899564339 | DP04    |
+| EMP09  | KIRAN    | MANAGER     |  60000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM DEPARTMENT;
++---------+-----------+
+| DEPT_NO | DEPT_NAME |
++---------+-----------+
+| DP01    | HR        |
+| DP02    | FINANCE   |
+| DP03    | IT        |
+| DP04    | MARKETING |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NO,EMP_NAME FROM EMPLOYEE WHERE DEPT_NO='DP02';
++--------+----------+
+| EMP_NO | EMP_NAME |
++--------+----------+
+| EMP02  | VEENA    |
+| EMP03  | ARUN     |
+| EMP09  | KIRAN    |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NO,EMP_NAME,DESIGNATION,DEPT_NO,SALARY FROM EMPLOYEE ORDER BY SALARY DESC;
+ERROR 1054 (42S22): Unknown column 'DESIGNATION' in 'field list'
+mysql> ALTER TABLE EMPLOYEE CHANGE DESTINATION DESIGNATION VARCHAR(25);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 7898907689 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  50000 | 8776542312 | DP03    |
+| EMP06  | NEHA     | CLERK       |   5000 | 5667899034 | DP04    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP08  | JOHN     | CLERK       |  18000 | 8899564339 | DP04    |
+| EMP09  | KIRAN    | MANAGER     |  60000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NO,EMP_NAME,DESIGNATION,DEPT_NO,SALARY FROM EMPLOYEE ORDER BY SALARY DESC;
++--------+----------+-------------+---------+--------+
+| EMP_NO | EMP_NAME | DESIGNATION | DEPT_NO | SALARY |
++--------+----------+-------------+---------+--------+
+| EMP09  | KIRAN    | MANAGER     | DP02    |  60000 |
+| EMP05  | RAVI     | MANAGER     | DP03    |  50000 |
+| EMP01  | ANU      | MANAGER     | DP01    |  45000 |
+| EMP10  | ALEX     | ANALYST     | DP03    |  32000 |
+| EMP02  | VEENA    | ANALYST     | DP02    |  30000 |
+| EMP04  | ASHA     | ANALYST     | DP03    |  28000 |
+| EMP07  | AMAL     | ANALYST     | DP01    |  22000 |
+| EMP08  | JOHN     | CLERK       | DP04    |  18000 |
+| EMP03  | ARUN     | CLERK       | DP02    |  15000 |
+| EMP06  | NEHA     | CLERK       | DP04    |   5000 |
++--------+----------+-------------+---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NO,EMP_NAME FROM EMPLOYEE WHERE SALARY BETWEEN 20000 AND 30000;
++--------+----------+
+| EMP_NO | EMP_NAME |
++--------+----------+
+| EMP02  | VEENA    |
+| EMP04  | ASHA     |
+| EMP07  | AMAL     |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT DESIGNATION FROM EMPLOYEE;
++-------------+
+| DESIGNATION |
++-------------+
+| MANAGER     |
+| ANALYST     |
+| CLERK       |
++-------------+
+3 rows in set (0.02 sec)
+
+mysql> UPDATE EMPLOYEE SET SALARY=45000 WHERE DESIGNATION='MANAGER';
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 3  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 7898907689 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  45000 | 8776542312 | DP03    |
+| EMP06  | NEHA     | CLERK       |   5000 | 5667899034 | DP04    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP08  | JOHN     | CLERK       |  18000 | 8899564339 | DP04    |
+| EMP09  | KIRAN    | MANAGER     |  45000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET MOB='9999999999' WHERE EMP_NAME='VEENA';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 9999999999 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  45000 | 8776542312 | DP03    |
+| EMP06  | NEHA     | CLERK       |   5000 | 5667899034 | DP04    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP08  | JOHN     | CLERK       |  18000 | 8899564339 | DP04    |
+| EMP09  | KIRAN    | MANAGER     |  45000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> DELETE FROM EMPLOYEE WHERE SALARY=50000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM EMPLOYEE WHERE SALARY=5000;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 9999999999 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  45000 | 8776542312 | DP03    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP08  | JOHN     | CLERK       |  18000 | 8899564339 | DP04    |
+| EMP09  | KIRAN    | MANAGER     |  45000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,MOB FROM EMPLOYEE WHERE EMP_NAME LIKE 'A%';
++----------+------------+
+| EMP_NAME | MOB        |
++----------+------------+
+| ANU      | 9876986587 |
+| ARUN     | 6786787689 |
+| ASHA     | 8978564332 |
+| AMAL     | 9998564332 |
+| ALEX     | 9890979695 |
++----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE LENGTH(EMP_NAME)>=3 AND SALARY>20000;
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 9999999999 | DP02    |
+| EMP04  | ASHA     | ANALYST     |  28000 | 8978564332 | DP03    |
+| EMP05  | RAVI     | MANAGER     |  45000 | 8776542312 | DP03    |
+| EMP07  | AMAL     | ANALYST     |  22000 | 9998564332 | DP01    |
+| EMP09  | KIRAN    | MANAGER     |  45000 | 7766889900 | DP02    |
+| EMP10  | ALEX     | ANALYST     |  32000 | 9890979695 | DP03    |
++--------+----------+-------------+--------+------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMP_NO IN('EMP01','EMP02','EMP03');
++--------+----------+-------------+--------+------------+---------+
+| EMP_NO | EMP_NAME | DESIGNATION | SALARY | MOB        | DEPT_NO |
++--------+----------+-------------+--------+------------+---------+
+| EMP01  | ANU      | MANAGER     |  45000 | 9876986587 | DP01    |
+| EMP02  | VEENA    | ANALYST     |  30000 | 9999999999 | DP02    |
+| EMP03  | ARUN     | CLERK       |  15000 | 6786787689 | DP02    |
++--------+----------+-------------+--------+------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NO,EMP_NAME FROM EMPLOYEE WHERE SALARY BETWEEN 10000 AND 30000;
++--------+----------+
+| EMP_NO | EMP_NAME |
++--------+----------+
+| EMP02  | VEENA    |
+| EMP03  | ARUN     |
+| EMP04  | ASHA     |
+| EMP07  | AMAL     |
+| EMP08  | JOHN     |
++--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME FROM EMPLOYEE WHERE DESIGNATION IN('MANAGER','ANALYST');
++----------+
+| EMP_NAME |
++----------+
+| ANU      |
+| VEENA    |
+| ASHA     |
+| RAVI     |
+| AMAL     |
+| KIRAN    |
+| ALEX     |
++----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,COUNT(*) AS TOTAL_EMPLOYEES FROM EMPLOYEE GROUP BY DEPT_NO;
++---------+-----------------+
+| DEPT_NO | TOTAL_EMPLOYEES |
++---------+-----------------+
+| DP01    |               2 |
+| DP02    |               3 |
+| DP03    |               3 |
+| DP04    |               1 |
++---------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,AVG(SALARY) AS AVG_SALARY FROM EMPLOYEE GROUP BY DEPT_NO;
++---------+------------+
+| DEPT_NO | AVG_SALARY |
++---------+------------+
+| DP01    | 33500.0000 |
+| DP02    | 30000.0000 |
+| DP03    | 35000.0000 |
+| DP04    | 18000.0000 |
++---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,SUM(SALARY) AS TOTAL_SALARY FROM EMPLOYEE GROUP BY DEPT_NO;
++---------+--------------+
+| DEPT_NO | TOTAL_SALARY |
++---------+--------------+
+| DP01    |        67000 |
+| DP02    |        90000 |
+| DP03    |       105000 |
+| DP04    |        18000 |
++---------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,MAX(SALARY) AS HIGHEST_SALARY MIN(SALARY) AS LOWEST_SALARY FROM EMPLOYEE GROUP BY DEPT_NO;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MIN(SALARY) AS LOWEST_SALARY FROM EMPLOYEE GROUP BY DEPT_NO' at line 1
+mysql> SELECT DEPT_NO,MAX(SALARY) AS HIGHEST_SALARY,MIN(SALARY) AS LOWEST_SALARY FROM EMPLOYEE GROUP BY DEPT_NO;
++---------+----------------+---------------+
+| DEPT_NO | HIGHEST_SALARY | LOWEST_SALARY |
++---------+----------------+---------------+
+| DP01    |          45000 |         22000 |
+| DP02    |          45000 |         15000 |
+| DP03    |          45000 |         28000 |
+| DP04    |          18000 |         18000 |
++---------+----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,AVG(SALARY) AS AVG_SALARY FROM EMPLOYEE WHERE DEPT_NO <>'DP01' GROUP BY DEPT_NO;
++---------+------------+
+| DEPT_NO | AVG_SALARY |
++---------+------------+
+| DP02    | 30000.0000 |
+| DP03    | 35000.0000 |
+| DP04    | 18000.0000 |
++---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DEPT_NO,AVG(SALARY) AS AVG_SALARY FROM EMPLOYEE WHERE DEPT_NO HAVING AVG(SALARY)>20000 ORDER BY AVG_SALARY ASC;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'JOB.EMPLOYEE.DEPT_NO'; this is incompatible with sql_mode=only_full_group_by
+mysql> SELECT DEPT_NO,AVG(SALARY) AS AVG_SALARY FROM EMPLOYEE WHERE DEPT_NO HAVING AVG(SALARY)>20000 ORDER BY AVG_SALARY ASC;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'JOB.EMPLOYEE.DEPT_NO'; this is incompatible with sql_mode=only_full_group_by
+mysql> ^C
+mysql> SELECT DEPT_NO,
+    ->        AVG(SALARY) AS AVG_SALARY
+    -> FROM EMPLOYEE
+    -> GROUP BY DEPT_NO
+    -> HAVING AVG(SALARY) > 20000
+    -> ORDER BY AVG_SALARY ASC;
++---------+------------+
+| DEPT_NO | AVG_SALARY |
++---------+------------+
+| DP02    | 30000.0000 |
+| DP01    | 33500.0000 |
+| DP03    | 35000.0000 |
++---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+

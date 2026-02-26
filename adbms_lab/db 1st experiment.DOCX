@@ -1,0 +1,426 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~/Desktop$ sudo mysql
+[sudo] password for mca: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.44-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE COLLEGE;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE COLLEGE;
+Database changed
+mysql> CREATE TABLE STUDENT
+    -> (ROLL_NO INT(10),
+    -> NAME VARCHAR(30),
+    -> DOB DATE,
+    -> PLACE VARCHAR(30),
+    -> PH_NO INT(10));
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_COLLEGE |
++-------------------+
+| STUDENT           |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE TABLE COURSE
+    -> (COURSE_CODE INT(10),
+    -> COURSE_NAME VARCHAR(30),
+    -> CREDIT INT(6));
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> SHOW TABLES
+    -> ;
++-------------------+
+| Tables_in_COLLEGE |
++-------------------+
+| COURSE            |
+| STUDENT           |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC STUDENTS;
+ERROR 1146 (42S02): Table 'COLLEGE.STUDENTS' doesn't exist
+mysql> DESC STUDENT;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| ROLL_NO | int         | YES  |     | NULL    |       |
+| NAME    | varchar(30) | YES  |     | NULL    |       |
+| DOB     | date        | YES  |     | NULL    |       |
+| PLACE   | varchar(30) | YES  |     | NULL    |       |
+| PH_NO   | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> DESC COURSE;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| COURSE_CODE | int         | YES  |     | NULL    |       |
+| COURSE_NAME | varchar(30) | YES  |     | NULL    |       |
+| CREDIT      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE STUDENT DROP PH_NO;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| ROLL_NO | int         | YES  |     | NULL    |       |
+| NAME    | varchar(30) | YES  |     | NULL    |       |
+| DOB     | date        | YES  |     | NULL    |       |
+| PLACE   | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT ADD AADHAR_NO VARCHAR(12);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| ROLL_NO   | int         | YES  |     | NULL    |       |
+| NAME      | varchar(30) | YES  |     | NULL    |       |
+| DOB       | date        | YES  |     | NULL    |       |
+| PLACE     | varchar(30) | YES  |     | NULL    |       |
+| AADHAR_NO | varchar(12) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT MODIFY COLUMN ROLL_NO VARCHAR;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE STUDENT MODIFY COLUMN ROLL_NO VARCHAR(10);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DROP TABLE STUDENT;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_COLLEGE |
++-------------------+
+| COURSE            |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> DROP TABLE COURSE;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW TABLES;
+Empty set (0.00 sec)
+
+mysql> DROP DATABASE COLEEGE;
+ERROR 1008 (HY000): Can't drop database 'COLEEGE'; database doesn't exist
+mysql> DROP DATABASE COLEGE;
+ERROR 1008 (HY000): Can't drop database 'COLEGE'; database doesn't exist
+mysql> DROP DATABASE COLLEGE;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| LIBRARY            |
+| Library            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> ^C
+mysql> 
+
+
+
+
+
+
+
+
+
+
+mysql> CREATE DATABASE OFFICE;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> USE OFFICE;
+Database changed
+mysql> CREATE TABLE EMPLOYEE
+    -> (EMP_NO INT(9),
+    -> EMP_NAME VARCHAR(30),
+    -> PLACE VARCHAR(30),
+    -> PH_NO DECIMAL(10),
+    -> DEPT_NAME VARCHAR(15),
+    -> JOB_ID INT(9),
+    -> SALARY INT(9));
+Query OK, 0 rows affected, 3 warnings (0.05 sec)
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_OFFICE |
++------------------+
+| EMPLOYEE         |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE TABLE DEPARTMENT
+    -> (DEPT_NO INT(9),
+    -> EMP_NO INT(9)
+    -> ,
+    -> EMP_NAME VARCHAR(30));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_OFFICE |
++------------------+
+| DEPARTMENT       |
+| EMPLOYEE         |
++------------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD HIRE_DATE DATE;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE
+    -> ;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| EMP_NO    | int           | YES  |     | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | int           | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
+| HIRE_DATE | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DEPT_NO  | int         | YES  |     | NULL    |       |
+| EMP_NO   | int         | YES  |     | NULL    |       |
+| EMP_NAME | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE MODIFY COLUMN JOB_ID VARCHAR(10);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| EMP_NO    | int           | YES  |     | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(10)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
+| HIRE_DATE | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD PRIMARY KEY EMP_NO;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE EMPLOYEE ADD PRIMARY KEY (EMP_NO);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| EMP_NO    | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(10)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
+| HIRE_DATE | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DEPT_NO  | int         | YES  |     | NULL    |       |
+| EMP_NO   | int         | YES  |     | NULL    |       |
+| EMP_NAME | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE RENAME COLUMN EMP_ID TO E_NO;
+ERROR 1054 (42S22): Unknown column 'EMP_ID' in 'EMPLOYEE'
+mysql> ALTER TABLE EMPLOYEE RENAME COLUMN EMP_NO TO E_NO;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| E_NO      | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(10)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
+| HIRE_DATE | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE DEPARTMENT RENAME COLUMN EMP_NO TO E_NO;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DEPT_NO  | int         | YES  |     | NULL    |       |
+| E_NO     | int         | YES  |     | NULL    |       |
+| EMP_NAME | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE MODIFY COLUMN JOB_ID VARCHAR(20);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| E_NO      | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(20)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
+| HIRE_DATE | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> ALTER TABLE DEPARTMENT ADD PRIMARY KEY (DEPT_NO);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DEPT_NO  | int         | NO   | PRI | NULL    |       |
+| E_NO     | int         | YES  |     | NULL    |       |
+| EMP_NAME | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE EMPLOYEE DROP HIRE_DATE;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;.
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| E_NO      | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(20)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.' at line 1
+mysql> ALTER TABLE EMPLOYEE TO EMP;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TO EMP' at line 1
+mysql> RENAME TABLE EMPLOYEE TO EMP;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC EMP;.
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| E_NO      | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(20)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.' at line 1
+mysql> TRUNCATE TABLE EMP;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DESC EMP;.
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| E_NO      | int           | NO   | PRI | NULL    |       |
+| EMP_NAME  | varchar(30)   | YES  |     | NULL    |       |
+| PLACE     | varchar(30)   | YES  |     | NULL    |       |
+| PH_NO     | decimal(10,0) | YES  |     | NULL    |       |
+| DEPT_NAME | varchar(15)   | YES  |     | NULL    |       |
+| JOB_ID    | varchar(20)   | YES  |     | NULL    |       |
+| SALARY    | int           | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+    -> TRUNCATE TABLE EMP;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.
+TRUNCATE TABLE EMP' at line 1
+mysql> DROP TABLE EMP;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> TRUNCATE TABLE DEPARTMENT;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DROP TABLE DEPARTMENT;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC EMP;.
+ERROR 1146 (42S02): Table 'OFFICE.EMP' doesn't exist
+    -> DESC EMP;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.
+DESC EMP' at line 1
+mysql> 
+
+

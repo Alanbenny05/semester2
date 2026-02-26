@@ -1,0 +1,256 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~/Desktop$ sudo mysql
+[sudo] password for mca: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.44-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE TCL_DCL;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> USE TCL_DCL;
+Database changed
+mysql> CREATE TABLE ORDER_DETAILS
+    -> (ORDER_ID INT,
+    -> PRODUCT_NAME VARCHAR(50), 
+    -> ORDER_NO INT,
+    -> ORDER_DATE DATE);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(1,'LAPTOP',234,'2000_03_02');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(2,'DESKTOP',456,'2001_02_02');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(3,'KEYBOARD',457,'2000_03_02');
+Query OK, 1 row affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(4,'MOUSE',500,'2001_03_02');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(5,'ANTIVIRUS',501,'2002_03_02');
+Query OK, 1 row affected, 1 warning (0.03 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
+|        4 | MOUSE        |      500 | 2001-03-02 |
+|        5 | ANTIVIRUS    |      501 | 2002-03-02 |
++----------+--------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(6,'PRINTER',600,'2003_05_02');
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(7,'SCANNER',601,'2003_06_02');
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
+|        4 | MOUSE        |      500 | 2001-03-02 |
+|        5 | ANTIVIRUS    |      501 | 2002-03-02 |
+|        6 | PRINTER      |      600 | 2003-05-02 |
+|        7 | SCANNER      |      601 | 2003-06-02 |
++----------+--------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
+|        4 | MOUSE        |      500 | 2001-03-02 |
+|        5 | ANTIVIRUS    |      501 | 2002-03-02 |
++----------+--------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM ORDER_DETAILS WHERE ORDER_ID=4;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM ORDER_DETAILS WHERE ORDER_ID=5;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SET AUTOCOMMIT=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SAVEPOINT SVG_UPDATE;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE ORDER_DETAILS SET PRODUCT_NAME='GAMING KEYBOARD' WHERE ORDER_NO=457;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+-----------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME    | ORDER_NO | ORDER_DATE |
++----------+-----------------+----------+------------+
+|        1 | LAPTOP          |      234 | 2000-03-02 |
+|        2 | DESKTOP         |      456 | 2001-02-02 |
+|        3 | GAMING KEYBOARD |      457 | 2000-03-02 |
++----------+-----------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO ORDER_DETAILS VALUES(8,'SPEAKER',700,'2004_01_01'),(9,'WEBCAM',701,'2004_02_01');
+Query OK, 2 rows affected, 2 warnings (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 2
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+-----------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME    | ORDER_NO | ORDER_DATE |
++----------+-----------------+----------+------------+
+|        1 | LAPTOP          |      234 | 2000-03-02 |
+|        2 | DESKTOP         |      456 | 2001-02-02 |
+|        3 | GAMING KEYBOARD |      457 | 2000-03-02 |
+|        8 | SPEAKER         |      700 | 2004-01-01 |
+|        9 | WEBCAM          |      701 | 2004-02-01 |
++----------+-----------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SAVEPOINT SVP_DELETE;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM ORDER_DETAILS WHERE PRODUCT_NAME='DESKTOP';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+-----------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME    | ORDER_NO | ORDER_DATE |
++----------+-----------------+----------+------------+
+|        1 | LAPTOP          |      234 | 2000-03-02 |
+|        3 | GAMING KEYBOARD |      457 | 2000-03-02 |
+|        8 | SPEAKER         |      700 | 2004-01-01 |
+|        9 | WEBCAM          |      701 | 2004-02-01 |
++----------+-----------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> ROLLBACK TO SVP_DELETE;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+-----------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME    | ORDER_NO | ORDER_DATE |
++----------+-----------------+----------+------------+
+|        1 | LAPTOP          |      234 | 2000-03-02 |
+|        2 | DESKTOP         |      456 | 2001-02-02 |
+|        3 | GAMING KEYBOARD |      457 | 2000-03-02 |
+|        8 | SPEAKER         |      700 | 2004-01-01 |
+|        9 | WEBCAM          |      701 | 2004-02-01 |
++----------+-----------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> ROLLBACK TO SVG_UPDATE;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.01 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET AUTOCOMMIT=1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
++----------+--------------+----------+------------+
+| ORDER_ID | PRODUCT_NAME | ORDER_NO | ORDER_DATE |
++----------+--------------+----------+------------+
+|        1 | LAPTOP       |      234 | 2000-03-02 |
+|        2 | DESKTOP      |      456 | 2001-02-02 |
+|        3 | KEYBOARD     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> CREATE USER 'USER1'@'LOCALHOST' IDENTIFIED BY 'PASSWORD123';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> GRANT ALL PRIVILEGES ON ORDER_DETAILS TO 'USER1'@'LOCALHOST';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SHOW GRANTS FOR 'USER1'@'LOCALHOST';
++--------------------------------------------------------------------------+
+| Grants for USER1@localhost                                               |
++--------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `USER1`@`localhost`                                |
+| GRANT ALL PRIVILEGES ON `TCL_DCL`.`ORDER_DETAILS` TO `USER1`@`localhost` |
++--------------------------------------------------------------------------+
+2 rows in set (0.01 sec)
+
+mysql> REVOKE DELETE ON ORDER_DETAILS FROM 'USER1'@'LOCALHOST';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SHOW GRANTS FOR 'USER1'@'LOCALHOST';
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for USER1@localhost                                                                                                                                |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `USER1`@`localhost`                                                                                                                 |
+| GRANT SELECT, INSERT, UPDATE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER ON `TCL_DCL`.`ORDER_DETAILS` TO `USER1`@`localhost` |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+
