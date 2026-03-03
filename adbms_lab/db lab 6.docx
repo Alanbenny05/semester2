@@ -1,0 +1,289 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~$ sudo mysql
+[sudo] password for mca: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.44-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> USE EXP6;
+Database changed
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE FindGreatest(
+    ->     IN num1 INT,
+    ->     IN num2 INT,
+    ->     IN num3 INT
+    -> )
+    -> BEGIN
+    ->     DECLARE greatest INT;
+    -> 
+    ->     IF num1 >= num2 AND num1 >= num3 THEN
+    ->         SET greatest = num1;
+    ->     ELSEIF num2 >= num1 AND num2 >= num3 THEN
+    ->         SET greatest = num2;
+    ->     ELSE
+    ->         SET greatest = num3;
+    ->     END IF;
+    -> 
+    ->     SELECT greatest AS Greatest_Number;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL FindGreatest(90,67,54);
++-----------------+
+| Greatest_Number |
++-----------------+
+|              90 |
++-----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE FindFactorial(
+    ->     IN n INT
+    -> )
+    -> BEGIN
+    ->     DECLARE i INT DEFAULT 1;
+    ->     DECLARE fact BIGINT DEFAULT 1;
+    -> 
+    ->     WHILE i <= n DO
+    ->         SET fact = fact * i;
+    ->         SET i = i + 1;
+    ->     END WHILE;
+    -> 
+    ->     SELECT fact AS Factorial;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> call FindFactorial(5);
++-----------+
+| Factorial |
++-----------+
+|       120 |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE grade_proc(
+    ->     IN mark INT
+    -> )
+    -> BEGIN
+    ->     IF mark >= 90 THEN
+    ->         SELECT 'Grade A' AS Grade;
+    ->     ELSEIF mark >= 80 THEN
+    ->         SELECT 'Grade B' AS Grade;
+    ->     ELSEIF mark >= 70 THEN
+    ->         SELECT 'Grade C' AS Grade;
+    ->     ELSEIF mark >= 60 THEN
+    ->         SELECT 'Grade D' AS Grade;
+    ->     ELSE
+    ->         SELECT 'Grade F' AS Grade;
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> CALL grade_proc(65);
++---------+
+| Grade   |
++---------+
+| Grade D |
++---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE ReverseNumber(
+    -> In n INT
+    -> )
+    -> BEGIN
+    -> DECLARE rev INT DEFAULT 0;
+    -> DECLARE temp INT;
+    -> SET temp=N;
+    -> WHILE temp > 0 DO
+    ->         SET rev = rev * 10 + (temp % 10);
+    ->         SET temp = FLOOR(temp / 10);
+    ->     END WHILE;
+    -> 
+    ->     SELECT CONCAT('Reversed Number is: ', rev) AS Result;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL ReverseNumber(1234);
++--------------------------+
+| Result                   |
++--------------------------+
+| Reversed Number is: 4321 |
++--------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE SumSeries(
+    -> IN n INT
+    -> )
+    -> BEGIN
+    -> DECLARE total INT DEFAULT 0;
+    -> DECLARE i INT DEFAULT 1;
+    -> WHILE i <= n DO
+    -> SET total = total + i;
+    -> SET i = i + 1;
+    -> END WHILE;
+    -> SELECT CONCAT('sUM IS: ', total) AS Result;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL SumSeries(5);
++------------+
+| Result     |
++------------+
+| sUM IS: 15 |
++------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CREATE TABLE ACCOUNT(
+    -> ACCOUNT_ID INT PRIMARY KEY,
+    -> BALANCE INT);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO ACCOUNT VALUES(100,10000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO ACCOUNT VALUES(101,4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ACCOUNT VALUES(102,15000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO ACCOUNT VALUES(103,1000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE WITHDRAW_AMOUNT(
+    -> IN ACC_ID INT,
+    -> IN AMT INT)
+    -> BEGIN
+    -> DECLARE BAL INT;
+    -> SELECT BALANCE INTO BAL
+    -> FROM ACCOUNT
+    -> WHERE ACCOUNT_ID = ACC_ID;
+    -> IF BAL IS NULL THEN
+    -> SELECT 'Account does not exist' AS MESSAGE;
+    -> ELSEIF BAL - AMT >= 1000 THEN
+    -> UPDATE ACCOUNT SET BALANCE = BALANCE -AMT
+    -> WHERE ACCOUNT_ID = ACC_ID;
+    -> SELECT 'Withdrawal Successful' AS MESSAGE;
+    -> ELSE
+    -> SELECT 'Minimum balance should be 1000' AS MESSAGE;
+    -> END IF;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL WITHDRAW_AMOUNT(100,2000)
+    -> ;
++-----------------------+
+| MESSAGE               |
++-----------------------+
+| Withdrawal Successful |
++-----------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER //
+mysql> CREATE FUNCTION sum_of_digits(n INT)
+    -> RETURNS INT
+    -> DETERMINISTIC
+    -> BEGIN
+    -> DECLARE total INT DEFAULT 0;
+    -> DECLARE temp INT;
+    -> SET temp = n;
+    -> WHILE temp > 0 DO
+    -> SET total = total + MOD(temp,10);
+    -> SET temp = FLOOR(temp/10);
+    -> END WHILE; 
+    -> RETURN total;
+    -> END //
+mysql> DELIMITER ;
+mysql> SELECT sum_of_digits(1234);
++---------------------+
+| sum_of_digits(1234) |
++---------------------+
+|                  10 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql>
+
+mysql> CREATE TABLE EMPLOYEE(
+    -> EMP_ID INT PRIMARY KEY,
+    -> SALARY DECIMAL(10,2));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(101,20000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(102,18000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(103,15000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(104,35000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(105,29000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> DELIMITER //
+mysql> CREATE FUNCTION GET_SALARY(ID INT)
+    -> RETURNS DECIMAL(10,2)
+    -> DETERMINISTIC
+    -> READS SQL DATA
+    -> BEGIN 
+    -> DECLARE SAL DECIMAL(10,2);
+    -> SELECT SALARY INTO SAL
+    -> FROM EMPLOYEE
+    -> WHERE EMP_ID = ID;
+    -> RETURN SAL;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER ;
+mysql> SELECT GET_SALARY(103);
++-----------------+
+| GET_SALARY(103) |
++-----------------+
+|        15000.00 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
+
