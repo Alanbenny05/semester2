@@ -1,0 +1,193 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~$ mongosh
+Current Mongosh Log ID:	69b90d26d8c7ace385ce5f46
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~$ sudo systemctl start mongod
+[sudo] password for mca: 
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~$ mongosh
+Current Mongosh Log ID:	69b90d6fb0f76755c2ce5f46
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+Using MongoDB:		8.2.1
+Using Mongosh:		2.5.8
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2026-03-17T13:44:33.765+05:30: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2026-03-17T13:44:33.971+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+   2026-03-17T13:44:33.971+05:30: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-03-17T13:44:33.971+05:30: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-03-17T13:44:33.971+05:30: We suggest setting the contents of sysfsFile to 0.
+   2026-03-17T13:44:33.971+05:30: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+------
+
+test> use collegeDB
+switched to db collegeDB
+collegeDB> db.student.insertMany([
+... {rollno: 1, name: "Arun", dept: "MCA", sem: 2, cgpa: 8.1},
+... {rollno: 2, name: "Bina", dept: "CSE", sem: 3, cgpa: 7.5},
+... {rollno: 3, name: "Charan", dept: "MCA", sem: 4, cgpa: 8.7},
+... {rollno: 4, name: "Divya", dept: "ECE", sem: 1, cgpa: 7.9},
+... {rollno: 5, name: "Eshan", dept: "MCA", sem: 2, cgpa: 8.3},
+... {rollno: 6, name: "Farah", dept: "CSE", sem: 5, cgpa: 7.8},
+... {rollno: 7, name: "Gokul", dept: "MCA", sem: 3, cgpa: 8.5},
+... {rollno: 8, name: "Hema", dept: "EEE", sem: 6, cgpa: 7.2},
+... {rollno: 9, name: "Irfan", dept: "MCA", sem: 4, cgpa: 8.0},
+... {rollno: 10, name: "Jaya", dept: "CSE", sem: 2, cgpa: 7.6},
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69b912ebb0f76755c2ce5f47'),
+    '1': ObjectId('69b912ebb0f76755c2ce5f48'),
+    '2': ObjectId('69b912ebb0f76755c2ce5f49'),
+    '3': ObjectId('69b912ebb0f76755c2ce5f4a'),
+    '4': ObjectId('69b912ebb0f76755c2ce5f4b'),
+    '5': ObjectId('69b912ebb0f76755c2ce5f4c'),
+    '6': ObjectId('69b912ebb0f76755c2ce5f4d'),
+    '7': ObjectId('69b912ebb0f76755c2ce5f4e'),
+    '8': ObjectId('69b912ebb0f76755c2ce5f4f'),
+    '9': ObjectId('69b912ebb0f76755c2ce5f50')
+  }
+}
+collegeDB> db.student.find({ dept: "MCA"})
+[
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    dept: 'MCA',
+    sem: 2,
+    cgpa: 8.1
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f49'),
+    rollno: 3,
+    name: 'Charan',
+    dept: 'MCA',
+    sem: 4,
+    cgpa: 8.7
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4b'),
+    rollno: 5,
+    name: 'Eshan',
+    dept: 'MCA',
+    sem: 2,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    dept: 'MCA',
+    sem: 3,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4f'),
+    rollno: 9,
+    name: 'Irfan',
+    dept: 'MCA',
+    sem: 4,
+    cgpa: 8
+  }
+]
+collegeDB> db.student.updateMany(
+... { dept: "MCA" },
+... { $set: { sem: 1 } }
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+collegeDB> db.student.find()
+[
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    dept: 'MCA',
+    sem: 1,
+    cgpa: 8.1
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f48'),
+    rollno: 2,
+    name: 'Bina',
+    dept: 'CSE',
+    sem: 3,
+    cgpa: 7.5
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f49'),
+    rollno: 3,
+    name: 'Charan',
+    dept: 'MCA',
+    sem: 1,
+    cgpa: 8.7
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    dept: 'ECE',
+    sem: 1,
+    cgpa: 7.9
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4b'),
+    rollno: 5,
+    name: 'Eshan',
+    dept: 'MCA',
+    sem: 1,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4c'),
+    rollno: 6,
+    name: 'Farah',
+    dept: 'CSE',
+    sem: 5,
+    cgpa: 7.8
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    dept: 'MCA',
+    sem: 1,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    dept: 'EEE',
+    sem: 6,
+    cgpa: 7.2
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f4f'),
+    rollno: 9,
+    name: 'Irfan',
+    dept: 'MCA',
+    sem: 1,
+    cgpa: 8
+  },
+  {
+    _id: ObjectId('69b912ebb0f76755c2ce5f50'),
+    rollno: 10,
+    name: 'Jaya',
+    dept: 'CSE',
+    sem: 2,
+    cgpa: 7.6
+  }
+]
+collegeDB> 
+
+
