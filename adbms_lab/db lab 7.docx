@@ -1,0 +1,239 @@
+mca@mca-HP-Pro-Tower-280-G9-E-PCI-Desktop-PC:~$ sudo mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.44-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE EXP7;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE EXP7;
+Database changed
+mysql> CREATE TABLE employee (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(50),
+    ->     job VARCHAR(50),
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO employee VALUES
+    -> (101,'Rahul','Manager',45000),
+    -> (102,'Anita','Clerk',25000),
+    -> (103,'Kiran','Developer',28000),
+    -> (104,'Priya','HR',32000),
+    -> (105,'Arjun','Assistant',20000);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM employee;
++--------+-------+-----------+----------+
+| emp_id | name  | job       | salary   |
++--------+-------+-----------+----------+
+|    101 | Rahul | Manager   | 45000.00 |
+|    102 | Anita | Clerk     | 25000.00 |
+|    103 | Kiran | Developer | 28000.00 |
+|    104 | Priya | HR        | 32000.00 |
+|    105 | Arjun | Assistant | 20000.00 |
++--------+-------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE emp_history (
+    ->     emp_id INT,
+    ->     name VARCHAR(50),
+    ->     job VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     date_of_deletion DATE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE electricity (
+    ->     cust_id INT PRIMARY KEY,
+    ->     cust_name VARCHAR(50),
+    ->     units INT,
+    ->     bill_amount DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO electricity VALUES
+    -> (1,'Rahul',120,NULL),
+    -> (2,'Anita',250,NULL),
+    -> (3,'Kiran',80,NULL),
+    -> (4,'Priya',310,NULL),
+    -> (5,'Arjun',180,NULL);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM electricity;
++---------+-----------+-------+-------------+
+| cust_id | cust_name | units | bill_amount |
++---------+-----------+-------+-------------+
+|       1 | Rahul     |   120 |        NULL |
+|       2 | Anita     |   250 |        NULL |
+|       3 | Kiran     |    80 |        NULL |
+|       4 | Priya     |   310 |        NULL |
+|       5 | Arjun     |   180 |        NULL |
++---------+-----------+-------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE increase_salary()
+    -> BEGIN
+    -> DECLARE done INT DEFAULT 0;
+    -> DECLARE v_emp_id INT;
+    -> DECLARE v_salary DECIMAL(10,2);
+    -> DECLARE emp_cursor CURSOR FOR 
+    -> SELECT emp_id, salary FROM employee WHERE salary <30000;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -> OPEN emp_cursor;
+    -> read_loop: LOOP
+    -> FETCH emp_cursor;
+    -> ^C
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE increase_salary()
+    -> BEGIN
+    -> DECLARE done INT DEFAULT 0;
+    -> DECLARE v_emp_id INT;
+    -> DECLARE v_salary DECIMAL(10,2);
+    -> DECLARE emp_cursor CURSOR FOR
+    -> SELECT emp_id, salary FROM employee WHERE salary < 30000;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -> OPEN emp_cursor;
+    -> read_loop: LOOP
+    -> FETCH emp_cursor INTO v_emp_id, v_salary;
+    -> IF done = 1 THEN
+    -> LEAVE read_loop;
+    -> END IF;
+    -> UPDATE employee
+    -> SET salary = salary * 1.10
+    -> WHERE emp_id = v_emp_id;
+    -> END LOOP;
+    -> CLOSE emp_cursor;
+    -> END//
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> CALL increase_salary();
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM employee;
++--------+-------+-----------+----------+
+| emp_id | name  | job       | salary   |
++--------+-------+-----------+----------+
+|    101 | Rahul | Manager   | 45000.00 |
+|    102 | Anita | Clerk     | 27500.00 |
+|    103 | Kiran | Developer | 30800.00 |
+|    104 | Priya | HR        | 32000.00 |
+|    105 | Arjun | Assistant | 22000.00 |
++--------+-------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE calculate_bill()
+    -> BEGIN
+    -> DECLARE done INT DEFAULT 0;
+    -> DECLARE v_cust_id INT;
+    -> DECLARE v_units INT;
+    -> DECLARE v_bill DECIMAL(10,2);
+    -> DECLARE cur CURSOR FOR
+    -> SELECT cust_id, units FROM electricity;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -> OPEN cur;
+    -> bill_loop: LOOP
+    -> FETCH cur INTO v_cust_id, v_units;
+    -> IF done = 1 THEN
+    -> LEAVE bill_loop;
+    -> END IF;
+    -> IF v_units <= 100 THEN
+    -> SET v_bill = v_units * 1.5;
+    -> ELSEIF v_units <= 200 THEN
+    -> SET v_bill = (100*1.5) + ((v_units-100)*2.5);
+    -> ELSEIF v_units <= 300 THEN
+    -> SET v_bill = (100*1.5) + (100*2.5) + ((v_units-200)*4);
+    -> ELSE
+    -> SET v_bill = (100*1.5) + (100*2.5) + (100*4) + ((v_units-300)*5);
+    -> END IF;
+    -> UPDATE electricity
+    -> SET bill_amount = v_bill
+    -> WHERE cust_id = v_cust_id;
+    -> END LOOP;
+    -> CLOSE cur;
+    -> END//
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> CALL calculate_bill();
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT * FROM electricity;
++---------+-----------+-------+-------------+
+| cust_id | cust_name | units | bill_amount |
++---------+-----------+-------+-------------+
+|       1 | Rahul     |   120 |      200.00 |
+|       2 | Anita     |   250 |      600.00 |
+|       3 | Kiran     |    80 |      120.00 |
+|       4 | Priya     |   310 |      850.00 |
+|       5 | Arjun     |   180 |      350.00 |
++---------+-----------+-------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM emp_history;
+Empty set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE TRIGGER emp_delete_trigger
+    -> AFTER DELETE ON employee
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO emp_history
+    -> VALUES (OLD.emp_id, OLD.name, OLD.job, OLD.salary, CURDATE());
+    -> END//
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> SELECT * FROM emp_history;
+Empty set (0.00 sec)
+
+mysql> DESC DELIMITER //
+    -> CREATE TRIGGER emp_delete_trigger
+    -> AFTER DELETE ON employee
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO emp_history
+    -> VALUES (OLD.emp_id, OLD.name, OLD.job, OLD.salary, CURDATE());
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '//
+CREATE TRIGGER emp_delete_trigger
+AFTER DELETE ON employee
+FOR EACH ROW
+BEGIN' at line 1
+mysql> END//
+    -> 
+    -> DELIMITER ;^C
+mysql> DESC emp_history;
++------------------+---------------+------+-----+---------+-------+
+| Field            | Type          | Null | Key | Default | Extra |
++------------------+---------------+------+-----+---------+-------+
+| emp_id           | int           | YES  |     | NULL    |       |
+| name             | varchar(50)   | YES  |     | NULL    |       |
+| job              | varchar(50)   | YES  |     | NULL    |       |
+| salary           | decimal(10,2) | YES  |     | NULL    |       |
+| date_of_deletion | date          | YES  |     | NULL    |       |
++------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> 
+
+
